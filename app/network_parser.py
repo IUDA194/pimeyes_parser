@@ -9,16 +9,26 @@ from selenium.webdriver.support import expected_conditions as EC
 
 def get_data_from_network(url : str) -> json:
     # Настройка опций Chrome для перехвата сетевых логов
-    chrome_options = Options()
-    chrome_options.add_argument("--no-sandbox")
-    chrome_options.add_argument("--disable-dev-shm-usage")
-    chrome_options.add_argument("--disable-gpu")
-    chrome_options.add_argument("--headless")
+    test = True
+    
+    if test:
+        chrome_options = Options()
+        chrome_options.add_argument(
+            "--headless"
+        )
+        driver = webdriver.Chrome(options=chrome_options)
+    else:
+        chrome_options = Options()
+        chrome_options.add_argument("--no-sandbox")
+        chrome_options.add_argument("--disable-dev-shm-usage")
+        chrome_options.add_argument("--disable-gpu")
+        chrome_options.add_argument("--headless")
 
-    driver = WebDriver(
-        command_executor=f"{os.getenv("SELENIUM_URL")}",
-        options=chrome_options
-    )
+        driver = WebDriver(
+            command_executor=f"{os.getenv("SELENIUM_URL")}",
+            options=chrome_options
+        )
+
     chrome_options.set_capability("goog:loggingPrefs", {"performance": "ALL"})
 
     # Запуск ChromeDriver

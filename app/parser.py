@@ -94,7 +94,7 @@ def enter_verification_code(driver):
 
 def login(driver):
     try:
-        auth_button = WebDriverWait(driver, 20).until(
+        auth_button = WebDriverWait(driver, 3).until(
             EC.element_to_be_clickable((By.CSS_SELECTOR, "button.auth"))
         )
         auth_button.click()
@@ -144,7 +144,8 @@ def login(driver):
         # Save cookies after login
         save_cookies(driver, cookies_file)
         
-    except:
+    except Exception as e:
+        print(e)
         print("skip auth_button click")
 
 def validate_auth(driver):
@@ -192,6 +193,9 @@ def upload_photo(driver, path):
     )
     print(f"File input field found. Sending file path: {path}")
     file_input.send_keys(path)
+    
+    time.sleep(5)
+    #driver.save_screenshot('screenshot.png')
 
     print("Waiting for required input fields to be present...")
     inputs = WebDriverWait(driver, 20).until(
@@ -200,6 +204,7 @@ def upload_photo(driver, path):
     print(f"Found {len(inputs)} required input fields. Clicking them...")
     for input_element in inputs:
         input_element.click()
+
 
     print("Waiting for the start button to be present...")
     start_button = WebDriverWait(driver, 20).until(
@@ -226,16 +231,26 @@ def get_results(driver):
 
 def find_face(path, url="https://pimeyes.com/en"):
     #return get_data_from_network("https://pimeyes.com/en/results/xgy_241224k8xgz58undjvmjefd401a69?query=c0e6e7c7e7c6c30084dec3c35f67c3c1")
-    chrome_options = Options()
-    chrome_options.add_argument("--no-sandbox")
-    chrome_options.add_argument("--disable-dev-shm-usage")
-    chrome_options.add_argument("--disable-gpu")
-    chrome_options.add_argument("--headless")
+    
+    test = True
+    
+    if test:
+        chrome_options = Options()
+        chrome_options.add_argument(
+            "--headless"
+        )
+        driver = webdriver.Chrome(options=chrome_options)
+    else:
+        chrome_options = Options()
+        chrome_options.add_argument("--no-sandbox")
+        chrome_options.add_argument("--disable-dev-shm-usage")
+        chrome_options.add_argument("--disable-gpu")
+        chrome_options.add_argument("--headless")
 
-    driver = WebDriver(
-        command_executor=f"{os.getenv("SELENIUM_URL")}",
-        options=chrome_options
-    )
+        driver = WebDriver(
+            command_executor=f"{os.getenv("SELENIUM_URL")}",
+            options=chrome_options
+        )
 
     try:
         driver.get(url)
