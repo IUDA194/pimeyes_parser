@@ -232,8 +232,7 @@ def get_results(driver):
 def find_face(path, url="https://pimeyes.com/en"):
     #return get_data_from_network("https://pimeyes.com/en/results/xgy_241224k8xgz58undjvmjefd401a69?query=c0e6e7c7e7c6c30084dec3c35f67c3c1")
     
-    test = True
-    
+    test = False
     if test:
         chrome_options = Options()
         chrome_options.add_argument(

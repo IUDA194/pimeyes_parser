@@ -9,7 +9,7 @@ from selenium.webdriver.support import expected_conditions as EC
 
 def get_data_from_network(url : str) -> json:
     # Настройка опций Chrome для перехвата сетевых логов
-    test = True
+    test = False
     
     if test:
         chrome_options = Options()

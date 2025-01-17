@@ -38,5 +38,5 @@ async def main():
         else: 
             print("Очередь пуста")
             time.sleep(3)
-        
+
 asyncio.run(main())
