@@ -98,53 +98,54 @@ def login(driver):
             EC.element_to_be_clickable((By.CSS_SELECTOR, "button.auth"))
         )
         auth_button.click()
+        
+        email_field = WebDriverWait(driver, 20).until(
+            EC.visibility_of_element_located(
+                (By.CSS_SELECTOR, ".login-frm > div:nth-child(2) > input:nth-child(2)")
+            )
+        )
+        email_field.send_keys(os.getenv("P_USERNAME"))
+
+        password_field = WebDriverWait(driver, 20).until(
+            EC.visibility_of_element_located((By.CSS_SELECTOR, 'input[type="password"]'))
+        )
+        password_field.send_keys(os.getenv("P_PASSWORD"))
+
+        login_button = WebDriverWait(driver, 20).until(
+            EC.element_to_be_clickable((By.CSS_SELECTOR, ".login-btn"))
+        )
+        login_button.click()
+        
+        try:
+            # Проверка на наличие поля "Email Verification"
+            email_verification_field = WebDriverWait(driver, 10).until(
+                EC.visibility_of_element_located((By.XPATH, "//h2[text()='Email Verification']"))
+            )
+            if email_verification_field:
+                print("Поле 'Email Verification' найдено.")
+                # Нажимаем кнопку с классом 'resend-btn'
+                resend_button = WebDriverWait(driver, 10).until(
+                    EC.element_to_be_clickable((By.CSS_SELECTOR, "button.resend-btn"))
+                )
+                resend_button.click()
+                print("Кнопка 'Resend' нажата.")
+                enter_verification_code(driver=driver)
+                
+        except Exception as e:
+            print(f"Ошибка: {e}")
+
+        # Wait until logged in (e.g., by checking for an element visible after login)
+        WebDriverWait(driver, 60).until(
+            EC.visibility_of_element_located(
+                (By.XPATH, "//*[contains(text(), 'My Subscription')]")
+            )
+        )
+
+        # Save cookies after login
+        save_cookies(driver, cookies_file)
+        
     except:
         print("skip auth_button click")
-
-    email_field = WebDriverWait(driver, 20).until(
-        EC.visibility_of_element_located(
-            (By.CSS_SELECTOR, ".login-frm > div:nth-child(2) > input:nth-child(2)")
-        )
-    )
-    email_field.send_keys(os.getenv("P_USERNAME"))
-
-    password_field = WebDriverWait(driver, 20).until(
-        EC.visibility_of_element_located((By.CSS_SELECTOR, 'input[type="password"]'))
-    )
-    password_field.send_keys(os.getenv("P_PASSWORD"))
-
-    login_button = WebDriverWait(driver, 20).until(
-        EC.element_to_be_clickable((By.CSS_SELECTOR, ".login-btn"))
-    )
-    login_button.click()
-    
-    try:
-        # Проверка на наличие поля "Email Verification"
-        email_verification_field = WebDriverWait(driver, 10).until(
-            EC.visibility_of_element_located((By.XPATH, "//h2[text()='Email Verification']"))
-        )
-        if email_verification_field:
-            print("Поле 'Email Verification' найдено.")
-            # Нажимаем кнопку с классом 'resend-btn'
-            resend_button = WebDriverWait(driver, 10).until(
-                EC.element_to_be_clickable((By.CSS_SELECTOR, "button.resend-btn"))
-            )
-            resend_button.click()
-            print("Кнопка 'Resend' нажата.")
-            enter_verification_code(driver=driver)
-            
-    except Exception as e:
-        print(f"Ошибка: {e}")
-
-    # Wait until logged in (e.g., by checking for an element visible after login)
-    WebDriverWait(driver, 60).until(
-        EC.visibility_of_element_located(
-            (By.XPATH, "//*[contains(text(), 'My Subscription')]")
-        )
-    )
-
-    # Save cookies after login
-    save_cookies(driver, cookies_file)
 
 def validate_auth(driver):
     login_button = WebDriverWait(driver, 20).until(
