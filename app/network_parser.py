@@ -6,6 +6,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
+from webdriver_manager.chrome import ChromeDriverManager
+
 def get_data_from_network(url : str) -> json:
     # Настройка опций Chrome для перехвата сетевых логов
     chrome_options = Options()
@@ -15,11 +17,8 @@ def get_data_from_network(url : str) -> json:
     chrome_options.add_argument("--disable-gpu")  # Отключение GPU
     chrome_options.add_argument("--remote-debugging-port=9222")  # Установка порта для отладки
     chrome_options.set_capability("goog:loggingPrefs", {"performance": "ALL"})
-
-    # Запуск ChromeDriver
-    chrome_service = Service("/usr/bin/chromedriver")
     
-    driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
 
 
     driver.get(url)
