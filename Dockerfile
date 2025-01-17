@@ -15,4 +15,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Копируем проект в контейнер
 COPY . .
 
-CMD python bot.py
+CMD python main.py
