@@ -2,6 +2,7 @@ import os
 import pickle
 
 from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -219,10 +220,12 @@ def get_results(driver):
 def find_face(path, url="https://pimeyes.com/en"):
     #return get_data_from_network("https://pimeyes.com/en/results/xgy_241224k8xgz58undjvmjefd401a69?query=c0e6e7c7e7c6c30084dec3c35f67c3c1")
     chrome_options = Options()
-    chrome_options.add_argument(
-        "--headless"
-    )
-    driver = webdriver.Chrome(options=chrome_options)
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument("--disable-dev-shm-usage")
+    chrome_options.add_argument("--disable-gpu")
+    
+    driver = webdriver.Chrome(service=Service('/usr/local/bin/chromedriver'), options=chrome_options)
 
     try:
         driver.get(url)

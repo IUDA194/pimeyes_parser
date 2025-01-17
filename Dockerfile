@@ -25,7 +25,7 @@ RUN wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd6
     && rm google-chrome-stable_current_amd64.deb
 
 # Устанавливаем ChromeDriver
-ARG CHROMEDRIVER_VERSION=114.0.5735.90  # Укажите необходимую версию
+ARG CHROMEDRIVER_VERSION=132.0.6834.83
 RUN wget -q https://chromedriver.storage.googleapis.com/${CHROMEDRIVER_VERSION}/chromedriver_linux64.zip \
     && unzip chromedriver_linux64.zip \
     && mv chromedriver /usr/local/bin/ \
