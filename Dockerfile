@@ -1,3 +1,4 @@
+# Используем Python 3.12 в качестве базового образа
 FROM python:3.12
 
 # Устанавливаем переменную среды для запуска в режиме неинтерактивного режима
@@ -26,6 +27,7 @@ RUN apt-get update && apt-get install -y \
     libxtst6 \
     libatk-bridge2.0-0 \
     libgtk-3-0 \
+    libvulkan1 \
     --no-install-recommends && \
     rm -rf /var/lib/apt/lists/*
 
@@ -40,6 +42,7 @@ RUN CHROME_VERSION=$(google-chrome --version | grep -oP '\d+\.\d+\.\d+') && \
     unzip chromedriver_linux64.zip && \
     mv chromedriver /usr/local/bin/ && \
     rm chromedriver_linux64.zip
+
 # Копируем файлы зависимостей в контейнер
 COPY requirements.txt /app/
 
@@ -49,4 +52,5 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Копируем проект в контейнер
 COPY . .
 
-CMD python main.py
+# Команда для запуска скрипта
+CMD ["python", "main.py"]
