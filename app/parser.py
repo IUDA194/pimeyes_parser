@@ -23,14 +23,12 @@ def save_cookies(driver, file_path):
     with open(file_path, "wb") as file:
         pickle.dump(driver.get_cookies(), file)
 
-
 def load_cookies(driver, file_path):
     if os.path.exists(file_path):
         with open(file_path, "rb") as file:
             cookies = pickle.load(file)
             for cookie in cookies:
                 driver.add_cookie(cookie)
-
 
 def allow_cookies(driver):
     try:
@@ -212,8 +210,6 @@ def upload_photo(driver, path):
     start_button.click()
     print("Photo upload and search process initiated.")
 
-
-
 def get_results(driver):
     try:
         results = WebDriverWait(driver, 20).until(
@@ -221,9 +217,11 @@ def get_results(driver):
         )
 
         current_url = driver.current_url
+        print("link:", current_url)
         return get_data_from_network(url=current_url)
-    except: return None
-
+    except Exception as e: 
+        print(e)
+        return None
 
 def find_face(path, url="https://pimeyes.com/en"):
     #return get_data_from_network("https://pimeyes.com/en/results/xgy_241224k8xgz58undjvmjefd401a69?query=c0e6e7c7e7c6c30084dec3c35f67c3c1")
@@ -261,7 +259,11 @@ def find_face(path, url="https://pimeyes.com/en"):
 
         upload_photo(driver=driver, path=path)
 
+        print("фото загруженно, жду результатов")
+
         image_urls = get_results(driver)
+        
+        print(f"результаты полученны, ссылка: {image_urls}")
         
         return image_urls
 
