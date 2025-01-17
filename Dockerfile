@@ -1,7 +1,7 @@
 # Используем Python 3.12 в качестве базового образа
 FROM python:3.12
 
-# Устанавливаем переменную среды для запуска в режиме неинтерактивного режима
+# Устанавливаем переменную среды для работы в неинтерактивном режиме
 ENV PYTHONUNBUFFERED 1
 
 # Устанавливаем рабочую директорию внутри контейнера
@@ -36,9 +36,8 @@ RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.d
     apt-get install -y ./google-chrome-stable_current_amd64.deb && \
     rm google-chrome-stable_current_amd64.deb
 
-# Установка ChromeDriver вручную
-RUN CHROME_DRIVER_VERSION=$(wget -qO- https://chromedriver.storage.googleapis.com/LATEST_RELEASE) && \
-    wget https://chromedriver.storage.googleapis.com/$CHROME_DRIVER_VERSION/chromedriver_linux64.zip && \
+# Установка ChromeDriver, совместимого с текущей версией Google Chrome
+RUN wget https://chromedriver.storage.googleapis.com/132.0.6834.83/chromedriver_linux64.zip && \
     unzip chromedriver_linux64.zip && \
     mv chromedriver /usr/local/bin/ && \
     rm chromedriver_linux64.zip
@@ -46,11 +45,11 @@ RUN CHROME_DRIVER_VERSION=$(wget -qO- https://chromedriver.storage.googleapis.co
 # Копируем файлы зависимостей в контейнер
 COPY requirements.txt /app/
 
-# Устанавливаем зависимости
+# Устанавливаем Python-зависимости
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Копируем проект в контейнер
+# Копируем весь проект в контейнер
 COPY . .
 
-# Команда для запуска скрипта
+# Команда для запуска приложения
 CMD ["python", "main.py"]

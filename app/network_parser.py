@@ -13,10 +13,12 @@ def get_data_from_network(url: str) -> json:
     driver = None
 
     chrome_options = Options()
-    chrome_options.add_argument("--no-sandbox")
-    chrome_options.add_argument("--disable-dev-shm-usage")
-    chrome_options.add_argument("--disable-gpu")
-    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--headless")  # Headless режим
+    chrome_options.add_argument("--disable-dev-shm-usage")  # Использование /dev/shm
+    chrome_options.add_argument("--no-sandbox")  # Отключение sandbox
+    chrome_options.add_argument("--disable-gpu")  # Отключение GPU
+    chrome_options.add_argument("--remote-debugging-port=9222")  # Установка порта для отладки
+
 
     # Set logging preferences
     chrome_options.set_capability("goog:loggingPrefs", {"performance": "ALL"})
