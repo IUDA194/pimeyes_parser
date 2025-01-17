@@ -9,6 +9,10 @@ def get_data_from_network(url : str) -> json:
     # Настройка опций Chrome для перехвата сетевых логов
     chrome_options = Options()
     chrome_options.add_argument("--headless")  # Включаем headless режим
+    chrome_options.add_argument("--disable-dev-shm-usage")  # Использование /dev/shm
+    chrome_options.add_argument("--no-sandbox")  # Отключение sandbox
+    chrome_options.add_argument("--disable-gpu")  # Отключение GPU
+    chrome_options.add_argument("--remote-debugging-port=9222")  # Установка порта для отладки
     chrome_options.set_capability("goog:loggingPrefs", {"performance": "ALL"})
 
     # Запуск ChromeDriver
