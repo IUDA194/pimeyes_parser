@@ -12,6 +12,7 @@ WORKDIR /app
 # Обновляем систему и устанавливаем необходимые системные зависимости
 RUN apt-get update && apt-get install -y \
     wget \
+    unzip \
     libnss3 libxss1 libasound2 libx11-xcb1 libxcomposite1 libxcursor1 \
     libxi6 libxtst6 libxrandr2 libatk-bridge2.0-0 libgbm-dev \
     fonts-liberation xdg-utils \
