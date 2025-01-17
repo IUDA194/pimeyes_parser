@@ -224,7 +224,7 @@ def get_results(driver):
 
         current_url = driver.current_url
         print("link:", current_url)
-        return get_data_from_network(driver=driver, url=current_url)
+        return get_data_from_network(url=current_url)
     except Exception as e: 
         print(e)
         return None
