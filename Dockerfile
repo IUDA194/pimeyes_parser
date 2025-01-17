@@ -1,45 +1,18 @@
-# Используем официальный образ Python
-FROM python:3.12-slim
+FROM python:3.12
 
-# Устанавливаем переменные среды
-ENV PYTHONUNBUFFERED=1 \
-    PYTHONDONTWRITEBYTECODE=1 \
-    DEBIAN_FRONTEND=noninteractive
+# Устанавливаем переменную среды для запуска в режиме неинтерактивного режима
+ENV PYTHONUNBUFFERED 1
 
-# Устанавливаем рабочую директорию
+# Устанавливаем рабочую директорию внутри контейнера
 WORKDIR /app
 
-# Обновляем систему и устанавливаем необходимые системные зависимости
-RUN apt-get update && apt-get install -y \
-    wget \
-    unzip \
-    libnss3 libxss1 libasound2 libx11-xcb1 libxcomposite1 libxcursor1 \
-    libxi6 libxtst6 libxrandr2 libatk-bridge2.0-0 libgbm-dev \
-    fonts-liberation xdg-utils \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
-
-# Устанавливаем Google Chrome
-RUN wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
-    && dpkg -i google-chrome-stable_current_amd64.deb || apt-get -f install -y \
-    && rm google-chrome-stable_current_amd64.deb
-
-# Устанавливаем ChromeDriver
-ARG CHROMEDRIVER_VERSION=132.0.6834.83
-RUN wget -q https://chromedriver.storage.googleapis.com/${CHROMEDRIVER_VERSION}/chromedriver_linux64.zip \
-    && unzip chromedriver_linux64.zip \
-    && mv chromedriver /usr/local/bin/ \
-    && chmod +x /usr/local/bin/chromedriver \
-    && rm chromedriver_linux64.zip
-
-# Копируем файл зависимостей
+# Копируем файлы зависимостей в контейнер
 COPY requirements.txt /app/
 
-# Устанавливаем зависимости Python
+# Устанавливаем зависимости
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Копируем проект
-COPY . /app
+# Копируем проект в контейнер
+COPY . .
 
-# Указываем команду для запуска приложения
-CMD ["python", "main.py"]
+CMD python main.py
