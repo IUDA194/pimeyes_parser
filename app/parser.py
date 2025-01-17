@@ -181,30 +181,40 @@ def go_to_main_menu(driver):
 
 
 def upload_photo(driver, path):
+    print("Waiting for the upload button to be clickable...")
     upload_button = WebDriverWait(driver, 20).until(
         EC.element_to_be_clickable(
             (By.XPATH, '//*[@id="hero-section"]/div/div[1]/div/div/div[1]/button[2]')
         )
     )
+    print("Upload button found. Clicking the upload button...")
     upload_button.click()
 
+    print("Waiting for the file input field to be present...")
     file_input = WebDriverWait(driver, 20).until(
         EC.presence_of_element_located((By.CSS_SELECTOR, "input[type=file]"))
     )
+    print(f"File input field found. Sending file path: {path}")
     file_input.send_keys(path)
 
+    print("Waiting for required input fields to be present...")
     inputs = WebDriverWait(driver, 20).until(
         EC.presence_of_all_elements_located((By.XPATH, "//input[@required]"))
     )
+    print(f"Found {len(inputs)} required input fields. Clicking them...")
     for input_element in inputs:
         input_element.click()
 
+    print("Waiting for the start button to be present...")
     start_button = WebDriverWait(driver, 20).until(
         EC.presence_of_element_located(
             (By.XPATH, '//button[span[contains(text(), "Start Search")]]')
         )
     )
+    print("Start button found. Clicking the start button...")
     start_button.click()
+    print("Photo upload and search process initiated.")
+
 
 
 def get_results(driver):
