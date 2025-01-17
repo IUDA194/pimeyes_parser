@@ -284,6 +284,7 @@ def find_face(path, url="https://pimeyes.com/en"):
         
         print(f"результаты полученны, ссылка: {image_urls}")
         
+        driver.close()
         return image_urls
 
     except Exception as e:
