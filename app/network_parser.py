@@ -17,7 +17,10 @@ def get_data_from_network(url : str) -> json:
     chrome_options.set_capability("goog:loggingPrefs", {"performance": "ALL"})
 
     # Запуск ChromeDriver
-    driver = Service("/usr/bin/chromedriver")
+    chrome_service = Service("/usr/bin/chromedriver")
+    
+    driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
+
 
     driver.get(url)
 
