@@ -1,6 +1,8 @@
 import os
 import pickle
 
+import logging
+
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
@@ -9,6 +11,12 @@ from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium import webdriver
+
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+import logging
 
 from app.network_parser import get_data_from_network
 from app.get_email_code import extract_code, get_last_email
@@ -94,11 +102,13 @@ def enter_verification_code(driver):
 
 def login(driver):
     try:
-        auth_button = WebDriverWait(driver, 3).until(
-            EC.element_to_be_clickable((By.CSS_SELECTOR, "button.auth"))
-        )
-        auth_button.click()
-        
+        try:
+            auth_button = WebDriverWait(driver, 3).until(
+                EC.element_to_be_clickable((By.CSS_SELECTOR, "button.auth"))
+            )
+            auth_button.click()
+        except: pass
+            
         email_field = WebDriverWait(driver, 20).until(
             EC.visibility_of_element_located(
                 (By.CSS_SELECTOR, ".login-frm > div:nth-child(2) > input:nth-child(2)")
@@ -223,21 +233,18 @@ def get_results(driver):
         )
 
         current_url = driver.current_url
-        print("link:", current_url)
         return get_data_from_network(url=current_url)
-    except Exception as e: 
-        print(e)
-        return None
+    except: return None
+
 
 def find_face(path, url="https://pimeyes.com/en"):
     #return get_data_from_network("https://pimeyes.com/en/results/xgy_241224k8xgz58undjvmjefd401a69?query=c0e6e7c7e7c6c30084dec3c35f67c3c1")
-    print("a")
-    test = False
+    test = True
     if test:
         chrome_options = Options()
-        chrome_options.add_argument(
-            "--headless"
-        )
+        #chrome_options.add_argument(
+        #    "--headless"
+        #)
         driver = webdriver.Chrome(options=chrome_options)
     else:
         chrome_options = Options()
@@ -252,8 +259,7 @@ def find_face(path, url="https://pimeyes.com/en"):
             command_executor=f"{os.getenv("SELENIUM_URL")}",
             options=chrome_options
         )
-        
-    print("c")
+    get_results(driver)
 
     try:
         driver.get(url)
