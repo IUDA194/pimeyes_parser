@@ -12,6 +12,8 @@ def get_data_from_network(url : str) -> json:
     print("Подключение к ноде для парсинга результатов")
     test = False
     
+    driver = None
+    
     if test:
         chrome_options = Options()
         chrome_options.add_argument(
