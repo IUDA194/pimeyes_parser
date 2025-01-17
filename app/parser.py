@@ -16,7 +16,7 @@ from app.get_email_code import extract_code, get_last_email
 import time
 
 url = "https://pimeyes.com/en"
-cookies_file = "cookies.pkl"  # File to save cookies
+cookies_file = "cookies/cookies.pkl"  # File to save cookies
 
 
 def save_cookies(driver, file_path):
@@ -94,7 +94,6 @@ def enter_verification_code(driver):
     except Exception as e:
         print(f"Ошибка при вводе кода: {e}")
 
-
 def login(driver):
     try:
         auth_button = WebDriverWait(driver, 20).until(
@@ -164,7 +163,6 @@ def validate_auth(driver):
     except:
         login(driver=driver)
 
-
 def go_to_main_menu(driver):
     try:
         menu_button = WebDriverWait(driver, 3).until(
@@ -178,7 +176,6 @@ def go_to_main_menu(driver):
         menu_button.click()
     except:
         pass
-
 
 def upload_photo(driver, path):
     print("Waiting for the upload button to be clickable...")
