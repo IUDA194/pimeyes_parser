@@ -36,9 +36,6 @@ def get_data_from_network(url : str) -> json:
 
     chrome_options.set_capability("goog:loggingPrefs", {"performance": "ALL"})
 
-    # Запуск ChromeDriver
-    driver = webdriver.Chrome(options=chrome_options)
-
     driver.get(url)
 
     # Ожидание полной загрузки страницы
