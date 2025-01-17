@@ -9,6 +9,7 @@ from selenium.webdriver.support import expected_conditions as EC
 
 def get_data_from_network(url : str) -> json:
     # Настройка опций Chrome для перехвата сетевых логов
+    print("Подключение к ноде для парсинга результатов")
     test = False
     
     if test:
@@ -24,10 +25,14 @@ def get_data_from_network(url : str) -> json:
         chrome_options.add_argument("--disable-gpu")
         chrome_options.add_argument("--headless")
 
+        print(os.getenv("SELENIUM_URL"))
+
         driver = WebDriver(
             command_executor=f"{os.getenv("SELENIUM_URL")}",
             options=chrome_options
         )
+        
+    print("Подключение к ноде для парсинга результатов")
 
     chrome_options.set_capability("goog:loggingPrefs", {"performance": "ALL"})
 
@@ -72,5 +77,3 @@ def get_data_from_network(url : str) -> json:
                 except Exception as e:
                     print(f"Ошибка при получении тела ответа: {e}")
     driver.quit()
-    
-#print(get_data_from_network('https://pimeyes.com/en/results/xgy_241224k8xgz58undjvmjefd401a69?query=c0e6e7c7e7c6c30084dec3c35f67c3c1'))
